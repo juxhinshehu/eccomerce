@@ -22,7 +22,7 @@
                                 <tr>
                                     <td>{{ $product->name }}</td>
                                     <td>{{ $product->brand->name }}</td>
-                                    <td>{{ $product->price }} &euro;</td>
+                                    <td>{{ $product->price }} USD</td>
                                     <td><a href={{ "checkout?product_id=".$product->id}}           class="btn btn-primary btn-sm">buy</button></td>
                                 </tr>
                             @endforeach

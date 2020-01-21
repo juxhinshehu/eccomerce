@@ -38,7 +38,7 @@
                         <div class="col-sm-6">
                             <select class="form-control" id="shipping">
                                 <option>Free standard</option>
-                                <option>Express 10 EUR</option>
+                                <option>Express 10 USD</option>
                             </select>
                         </div>
                     </div>
