@@ -40,11 +40,21 @@ class OrdersController extends Controller
             $order->total_shipping_value = $shippingCost;
 
             $order->save();
+
             $this->notifyAdmin($order);
         }
         
         
         return $charge;
+    }
+
+    // dispatch a job that sends mail to the admin
+    private function notifyAdmin($order) {
+        $mailData = ['user_name' => $order->client_name, 
+                    'product_price' => $order->total_product_value ];
+        $adminEmail = \Config::get('app_vars.admin_email');
+
+        dispatch(new \App\Jobs\SendEmailJob($mailData, $adminEmail));
     }
 
     private function getShippingCost($shippingValue) {
@@ -53,24 +63,4 @@ class OrdersController extends Controller
         return 0;
     }
 
-    private function notifyAdmin($request) {
-        $data = array('name'=>"Juxhin Shehu");
-   
-        Mail::send(['text'=>'mail'], $data, function($message) {
-            $message->to('juxhinshehu@gmail.com', 'Tutorials Point')->subject
-            ('Laravel Basic Testing Mail');
-            $message->from('juxhinshehu@gmail.com','Juxhin Shehu');
-        });
-    }
-
-    public function testmail() {
-        $data = array('name'=>"Juxhin Shehu");
-   
-        Mail::send(['text'=>'mail'], $data, function($message) {
-            $message->to('juxhinshehu@gmail.com', 'Tutorials Point')->subject
-            ('Laravel Basic Testing Mail');
-            $message->from('juxhin@onlinenow.eu','Juxhin Shehu');
-        });
-    }
-   
 }

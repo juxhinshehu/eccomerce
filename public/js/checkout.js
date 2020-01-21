@@ -36,7 +36,7 @@ form.addEventListener('submit', function(event) {
 function stripeTokenHandler(token) {
     document.getElementById("submit").disabled = true;
     
-    let request = {stripeToken: token.id,
+    var request = {stripeToken: token.id,
                     name: document.getElementById("name").value,
                     address: document.getElementById("address").value,
                     product_id: getProductId(),
@@ -45,16 +45,24 @@ function stripeTokenHandler(token) {
     axios.post('/charge', request)
         .then(function (response) {
         document.getElementById("success-msg").style.visibility = "";
+        document.getElementById('errors').style.visibility = "hidden";
     })
     .catch(function (error) {
         console.log(error.response.data);
         document.getElementById("success-msg").style.visibility = "hidden";
-        document.getElementById('errors').innerHTML = error.response.data.message;
-        if (error.response.data.errors && error.response.data.errors.length > 1) {
-            for (var i = 0; i < error.response.data.errors.length; i++) {
-                document.getElementById('errors').innerHTML = error.response.data.message + "<br>";
+        document.getElementById("errors").style.visibility = "";
+        
+        var errorMsgs = "";
+        errorMsgs += error.response.data.message + "<br>";
+        
+        if (error.response.data.errors) {
+            for (var key in error.response.data.errors) {
+                errorMsgs += error.response.data.errors[key] + "<br>";
             }
-      }
+        }
+        
+        document.getElementById('errors').innerHTML = errorMsgs;
+
   })
   .then(function () {
       document.getElementById("submit").disabled = false;
