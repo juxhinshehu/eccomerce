@@ -2,8 +2,6 @@
 
 git clone https://github.com/juxhinshehu/eccomerce.git
 
-composer install
-
 composer and npm install (since laravel ui is used)
 
 php artisan migrate
